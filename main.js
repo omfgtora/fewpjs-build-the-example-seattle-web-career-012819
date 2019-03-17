@@ -3,8 +3,50 @@ const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
+const errorModal = document.getElementById('modal')
+const errorMessage = errorModal.querySelector('#modal-message')
+errorModal.classList.toggle('hidden')
 
+const likeButtons = document.querySelectorAll('.like')
 
+likeButtons.forEach(like => {
+  like.addEventListener('click', (evnt) => {
+    sendLike(evnt)
+  })
+})
+
+async function sendLike(evnt) {
+  mimicServerCall()
+  .then(data => {
+    console.log(data)
+    displayLike(evnt)
+  })
+  .catch(err => {
+    console.log(err)
+    errorModal.classList.toggle('hidden')
+    errorMessage.textContent = err
+    let displayError = setInterval(() => {
+      errorModal.classList.toggle('hidden')
+      errorMessage.textContent = ''
+      clearInterval(displayError)
+    }, 5000)
+  })
+}
+
+function displayLike(evnt) {
+  let target = evnt.target
+  if (target.classList.contains('like-glyph')) {
+      let heart = (target.textContent == EMPTY_HEART) ? FULL_HEART : EMPTY_HEART
+      target.textContent = heart
+      target = target.parentElement
+      target.classList.toggle('activated-heart')
+  } else {
+      let heartGlyph = target.querySelector('.like-glyph')
+      let heart = (heartGlyph.textContent == EMPTY_HEART) ? FULL_HEART : EMPTY_HEART
+      heartGlyph.textContent = heart
+      target.classList.toggle('activated-heart')
+  }
+}
 
 
 //------------------------------------------------------------------------------
