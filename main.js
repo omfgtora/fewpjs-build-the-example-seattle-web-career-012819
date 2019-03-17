@@ -25,10 +25,9 @@ async function sendLike(evnt) {
     console.log(err)
     errorModal.classList.toggle('hidden')
     errorMessage.textContent = err
-    let displayError = setInterval(() => {
+    setTimeout(() => {
       errorModal.classList.toggle('hidden')
       errorMessage.textContent = ''
-      clearInterval(displayError)
     }, 5000)
   })
 }
